@@ -33,10 +33,13 @@ dir_path = os.path.dirname(path)
 PATH = dir_path
 
 def get_presets():
+  """Gets presets saved by arandr.  These are in ~/.screenlayout"""
   onlyfiles = [ f[:-3] for f in listdir(PRESETS) if isfile(join(PRESETS,f)) ]
   return onlyfiles
 
 def xrandr_call(menu_item):
+  """Calls arandr with the specified preset, replacing as needed any DVI
+  device that has changed names since the preset was created."""
   dl_dev = subprocess.check_output([os.path.join(PATH,"detect_displaylink.sh")])
   script = menu_item.get_label()[2:]+".sh"
   path = os.path.join(PRESETS, script)
@@ -44,9 +47,7 @@ def xrandr_call(menu_item):
     line = f.readline()
     line = f.readline().strip()
   dl_dev = dl_dev.decode("utf-8").strip()
-  print(line)
   newline = re.sub("DVI-[0-9]-[0-9]", dl_dev, line)
-  print(newline.split(" "))
   subprocess.call(newline.split(" "))
 
 def launch_arandr(menu_item):
@@ -79,10 +80,7 @@ if __name__ == "__main__":
   menu_items = Gtk.MenuItem(("Quit"))
   menu.append(menu_items)
   menu_items.connect("activate", Gtk.main_quit )
-  # show the item
   menu_items.show()
 
   ind.set_menu(menu)
-  #check(None)
-  #app_main()
   Gtk.main()
