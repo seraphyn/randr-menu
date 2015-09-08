@@ -34,6 +34,9 @@ PATH = dir_path
 
 def get_presets():
   """Gets presets saved by arandr.  These are in ~/.screenlayout"""
+  if not os.path.isdir(PRESETS):
+    os.mkdir(PRESETS)
+  
   onlyfiles = [ f[:-3] for f in listdir(PRESETS) if isfile(join(PRESETS,f)) ]
   return onlyfiles
 
@@ -51,8 +54,43 @@ def xrandr_call(menu_item):
   subprocess.call(newline.split(" "))
 
 def launch_arandr(menu_item):
-  subprocess.call("arandr")
-  
+  try:
+    subprocess.check_call("arandr")
+  except:
+    win = AlertWindow("Please install ARandR to set presets.")
+    win.connect("delete-event", Gtk.main_quit)
+    win.show_all()
+    
+class AlertWindow(Gtk.Window):
+  def __init__(self, label_text):
+    Gtk.Window.__init__(self, title="randr-menu")
+    self.set_border_width(10)
+ 
+    grid = Gtk.Grid()
+    vbox_top = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+    vbox_top.set_homogeneous(False)
+    vbox_bottom = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+    vbox_bottom.set_homogeneous(False)
+ 
+    #hbox.pack_start(vbox_top, True, True, 0)
+    #hbox.pack_start(vbox_bottom, True, True, 0)
+
+    label = Gtk.Label(label_text)
+    vbox_top.pack_start(label, True, True, 0)
+
+    button = Gtk.Button.new_with_label("Ok")
+    button.connect("clicked", self.on_click)
+
+    vbox_bottom.pack_start(button, True, True, 0)    
+
+    grid.add(vbox_top)
+    grid.attach_next_to(vbox_bottom, vbox_top, Gtk.PositionType.BOTTOM, 1, 2)
+    self.add(grid)
+    #self.add(hbox)
+
+  def on_click(self, button):
+    Gtk.main_quit()
+
 
 if __name__ == "__main__":
   ind = appindicator.Indicator.new(
@@ -63,7 +101,7 @@ if __name__ == "__main__":
   ind.set_status (appindicator.IndicatorStatus.ACTIVE)
   ind.set_attention_icon ("display")
   menu = Gtk.Menu()
-  menu_item = Gtk.MenuItem("ARandR Presets")
+  menu_item = Gtk.MenuItem("Configure Presets...")
   menu_item.connect("activate", launch_arandr)
   menu.append(menu_item)
   menu_item.show()
