@@ -55,6 +55,9 @@ def xrandr_call(menu_item):
 
 def launch_arandr(menu_item):
   try:
+    # try to connect displaylink devices before launching arandr
+    dl_dev = subprocess.check_output( 
+      [os.path.join(PATH,"detect_displaylink.sh")])
     subprocess.check_call("arandr")
   except:
     win = AlertWindow("Please install ARandR to set presets.")
