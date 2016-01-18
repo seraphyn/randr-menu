@@ -43,7 +43,7 @@ def get_presets():
 def xrandr_call(menu_item):
   """Calls arandr with the specified preset, replacing as needed any DVI
   device that has changed names since the preset was created."""
-  dl_dev = subprocess.check_output([os.path.join(PATH,"detect_displaylink.sh")])
+  dl_dev = subprocess.check_output(["/usr/bin/env", "detect-displaylink"])
   script = menu_item.get_label()[2:]+".sh"
   path = os.path.join(PRESETS, script)
   with open(path, "r") as f:
@@ -56,8 +56,7 @@ def xrandr_call(menu_item):
 def launch_arandr(menu_item):
   try:
     # try to connect displaylink devices before launching arandr
-    dl_dev = subprocess.check_output( 
-      [os.path.join(PATH,"detect_displaylink.sh")])
+    dl_dev = subprocess.check_output(["/usr/bin/env", "detect-displaylink"])
     subprocess.check_call("arandr")
   except:
     win = AlertWindow("Please install ARandR to set presets.")
