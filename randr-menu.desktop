@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Name=RandR Menu
+Comment=RandR Menu is a DisplayLink aware AppIndicator to quick select ARandR presets.
+Exec=/usr/bin/randr-menu
+Path=/usr/bin
+Icon=/usr/share/pixmaps/gdm.png
+Terminal=false
+Type=Application
+Categories=Accessory;Utility;Application

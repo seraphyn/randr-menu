@@ -9,8 +9,9 @@ setup(name='randr_menu',
       author_email='mt@trustdarkness.com',
       url='https://github.com/trustdarkness/randr-menu',
       py_modules=['randr_menu'],
-      data_files=[('/usr/bin', ['randr_menu']),
-                  ('/usr/bin', ['detect-displaylink'])],
+      data_files=[('/usr/bin', ['randr-menu']),
+                  ('/usr/bin', ['detect-displaylink']),
+                  ('/usr/share/applications', ['randr-menu.desktop'])],
       license='GPL v2.0',
 )
 
