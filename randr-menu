@@ -1,1 +1,3 @@
-python3 /usr/local/lib/python3.4/dist-packages/randr_menu.py
+#!/bin/bash
+distpack="`python3 -c 'import site; print(site.getsitepackages()[0])'`"
+python3 $distpack/randr_menu.py

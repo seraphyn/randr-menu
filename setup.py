@@ -2,6 +2,11 @@
 
 from distutils.core import setup
 
+import sys
+if sys.version_info[0] < 3:
+    print("Must be using Python 3")
+    sys.exit(0)
+
 setup(name='randr_menu',
       version='0.1',
       description='Appindicator Menu for Display Profiles Using XRandR',
